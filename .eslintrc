@@ -1,0 +1,45 @@
+{
+  "root": true,
+  "extends": "standard",
+  "plugins": [
+    "html"
+  ],
+  "globals": {
+  },
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "node": true
+  },
+  "rules": {
+    //行尾必须有分号
+    "semi": [
+      "error",
+      "always"
+    ],
+    // 忽略一些空格的提示
+    "spaced-comment": [
+      0,
+      "always"
+    ],
+    // 提示函数括号前的空格
+    "space-before-function-paren": [
+      0,
+      "always"
+    ],
+    // 对长度超过120长度的代码行进行警告，并忽略注释、字符串等情况
+    "max-len": [
+      1,
+      {
+        "code": 120,
+        "tabWidth": 2,
+        "ignoreComments": true,
+        "ignoreTrailingComments": true,
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
+      }
+    ]
+  }
+}

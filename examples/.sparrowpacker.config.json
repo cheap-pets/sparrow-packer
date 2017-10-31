@@ -1,7 +1,7 @@
 {
   "sourceRoot": "src",
   "outputRoot": "dist",
-  "format": "iife",
+  "format": "umd",
   "modules": [
     {
       "name": "global-assets",
@@ -13,18 +13,18 @@
       }
     },
     {
-      "name": "module-a",
+      "name": "a",
       "description": "a demo module, include a page and vue components",
       "source": {
         "dir": "module-a",
-        "page": "module-a.html",
+        "page": "a.html",
         "postcss": "css",
         "script": "script/index.js",
         "asserts": "assets"
       },
       "output": {
-        "page": "module-a.html",
-        "script": "js/module-a-bundle.js",
+        "page": "a.html",
+        "script": "js/a.js",
         "css": "css/module-a-bundle.css",
         "asserts": "assets"
       },

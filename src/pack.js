@@ -6,6 +6,7 @@ const rollBabel = require('rollup-plugin-babel');
 const rollResolve = require('rollup-plugin-node-resolve');
 const rollVue = require('rollup-plugin-vue');
 const rollReplace = require('rollup-plugin-replace');
+const rollAlias = require('rollup-plugin-alias');
 
 const jsdom = require('jsdom');
 
@@ -33,15 +34,19 @@ async function processScript(tag) {
     tag
   );
   info('rollup begin, entry:', this.input, ' ...');
+
   let bundle = await rollup.rollup({
     input: this.input,
     plugins: [
-      rollReplace({
-        'process.env.NODE_ENV': JSON.stringify('production')
+      rollAlias({
+        'vue': join(parse(require.resolve('vue')).dir, 'vue.esm.js')
       }),
       rollResolve(),
       rollVue(),
-      rollBabel()
+      rollBabel(),
+      rollReplace({
+        'process.env.NODE_ENV': JSON.stringify('production')
+      })
     ]
   });
   await bundle.write({

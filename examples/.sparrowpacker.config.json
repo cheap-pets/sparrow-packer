@@ -1,35 +1,29 @@
 {
-  "sourceRoot": "src",
-  "outputRoot": "dist",
-  "format": "umd",
+  "sourceRoot": "src", // 源文件根目录
+  "outputRoot": "dist", // 输出根目录
+  "bundle": {
+    "format": "iife", // 生成立即执行脚本
+    "version": "auto", // 自动增长文件版本号
+    "autoInsert": true, // 自动插入页面
+    "scriptPath": "js", // js 文件输出路径
+    "cssPath": "css", // css 文件输出路径
+    "relativePath": "/static" // 页面中引用 bundle 文件的相对地址
+  },
+  "vue": {
+    "clientRender": true // 依赖客户端渲染的 vue 模块
+  },
   "modules": [
     {
-      "name": "global-assets",
+      "name": "a", // 模块名称
       "source": {
-        "asserts": "assets"
-      },
-      "output": {
-        "asserts": "assets"
-      }
-    },
-    {
-      "name": "a",
-      "description": "a demo module, include a page and vue components",
-      "source": {
-        "dir": "module-a",
-        "page": "a.html",
-        "postcss": "css",
-        "script": "script/index.js",
-        "asserts": "assets"
-      },
-      "output": {
-        "page": "a.html",
-        "script": "js/a.js",
-        "css": "css/module-a-bundle.css",
+        "dir": "module-a", // 模块目录
+        "page": "a.html", // 页面文件
+        "main": "script/index.js", // 入口文件（脚本）
+        "css": "css/index.pcss", // 样式文件
         "asserts": "assets"
       },
       "watch": [
-        "lib"
+        "lib" // 监视 lib 目录变化
       ]
     }
   ]

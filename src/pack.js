@@ -1,17 +1,31 @@
 const { join, parse, relative } = require('path');
 const { existsSync, readFileSync, writeFileSync, copySync } = require('fs-extra');
+const jsdom = require('jsdom');
 
 const rollup = require('rollup');
 const rollBabel = require('rollup-plugin-babel');
 const rollResolve = require('rollup-plugin-node-resolve');
 const rollVue = require('rollup-plugin-vue');
 const rollReplace = require('rollup-plugin-replace');
-const rollAlias = require('rollup-plugin-alias');
-
-const jsdom = require('jsdom');
 
 const { info, error } = require('./log');
 const { config } = require('./config');
+
+const rollPlugins = [
+  rollResolve(),
+  rollVue(),
+  rollBabel(),
+  rollReplace({
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
+  })
+];
+
+if ((config.vue || {}).vueClientRender) {
+  const rollAlias = require('rollup-plugin-alias');
+  rollPlugins.unshift(rollAlias({
+    'vue': join(parse(require.resolve('vue')).dir, 'vue.esm.js')
+  }));
+}
 
 async function copyFiles(input, output) {}
 
@@ -37,21 +51,11 @@ async function processScript(tag) {
 
   let bundle = await rollup.rollup({
     input: this.input,
-    plugins: [
-      rollAlias({
-        'vue': join(parse(require.resolve('vue')).dir, 'vue.esm.js')
-      }),
-      rollResolve(),
-      rollVue(),
-      rollBabel(),
-      rollReplace({
-        'process.env.NODE_ENV': JSON.stringify('production')
-      })
-    ]
+    plugins: rollPlugins,
   });
   await bundle.write({
     name: this.module.name,
-    format: config.format,
+    format: config.format || 'iife',
     file: this.outputScript
   });
   info('rollup completed, output script: ', this.outputScript, ' .');
@@ -84,7 +88,7 @@ function processPage() {
 }
 
 async function packOne(module, tag) {
-  const source = module.source;
+  const script = module.source;
   if (!source) return;
   try {
     const context = { module };

@@ -62,3 +62,6 @@ typings/
 
 # VSCode file
 .vscode
+
+# Examples Dist
+examples/dist/*

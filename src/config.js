@@ -1,4 +1,4 @@
-const { resolve, join, parse, relative } = require('path');
+const { join, parse, resolve } = require('path');
 const { existsSync, readFileSync } = require('fs-extra');
 const stripJsonComments = require('strip-json-comments');
 const { error } = require('./log');
@@ -8,7 +8,7 @@ const config = {};
 function loadConfig(path) {
   const f = join(path, '.sparrowpacker.config.json');
   let data;
-  if (existsSync(f)) {    
+  if (existsSync(f)) {
     data = JSON.parse(stripJsonComments(readFileSync(f, 'utf8')));
     data.base = path;
   } else if (!existsSync(join(path, 'package.json'))) {
@@ -18,63 +18,72 @@ function loadConfig(path) {
   return data;
 }
 
-function parseModuleConfig(module, sourceRoot, outputRoot) {
-  const { name, source, output } = module;
+function parseModuleConfig(module) {
+  const { name, source, watch } = module;
+  const output = module.output || {};
   if (!source) return;
-  const srcDir = join(sourceRoot, source.dir || '');
-  const data = {};
-  if (source.script) {
-    data.script = {
-      input: join(srcDir, source.script),
-      output: join(outputRoot, output.script || (name + '.js'))
-    }
-  }
-  if (source.page) {
-    const pageInput = join(srcDir, source.page);
-    const { ext } = parse(pageInput);
-    data.page = {
-      input: pageInput,
-      output: join(outputRoot, output.page || (name + ext))
-    }
-  }
-  if (source.css || output.css) {
-    data.css = {
-      input: source.css ? join(srcDir, source.css) : null,
-      output: join(outputRoot, output.css || (name + '.css'))
-    }
-  }
+  const { sourceRoot, bundle } = config;
+  const sourceDir = join(sourceRoot, source.dir || '');
+  const data = {
+    $name: name,
+    $watch: watch
+  };
+
   for (let s in source) {
-    if (['script', 'page', 'css'].indexOf(s) >= 0) continue;
-    data[s] = {
-      input: join(srcDir, source[s]),
-      output: join(outputRoot, output[s])
+    const src = (s === 'dir') ? null : join(sourceDir, source[s]);
+    if (!src || !existsSync(src)) continue;
+    let out;
+    switch (s) {
+      case 'script':
+        out = join(bundle.scriptPath || '', output.script || name + '.js');
+        break;
+      case 'css':
+        out = join(bundle.cssPath || '', output.css || name + '.js');
+        break;
+      case 'page':
+        out = join(bundle.pagePath || '', output.page || parse(source.page).base);
+        break;
+      default:
+        out = output[s] || source[s];
     }
+    data[s] = {
+      source: src,
+      output: out
+    };
   }
+  return data;
 }
 
 function parseConfig(path) {
   try {
-    error(process.cwd());
     let data = loadConfig(path || process.cwd());
     if (!data) {
       throw new Error('cannot load ".sparrowpacker.config.json" .');
     }
+    data.bundle = data.bundle || {
+      "version": "auto"
+    };
     for (let p in data) {
-      if (['sourceRoot', 'outputRoot', 'modules'].indexOf(p) >= 0) continue;
-      config[p] = data[p];
+      switch (p) {
+        case 'sourceRoot':
+        case 'outputRoot':
+          config[p] = join(data.base, data[p] || '');
+          break;
+        case 'modules':
+          config[p] = [];
+          break;
+        default:
+          config[p] = data[p];
+      }
     }
-    config.sourceRoot = join(data.base, data.sourceRoot || '');
-    config.outputRoot = join(data.base, data.outputRoot || '');
-    config.modules = [];
     data.modules.forEach(item => {
-      const module = parseModuleConfig(item, config.sourceRoot, config.outputRoot);
+      const module = parseModuleConfig(item);
       module && config.modules.push(module);
     });
     if (!config.modules.length) {
       throw new Error('cannot find any module .');
     }
-  }
-  catch (e) {
+  } catch (e) {
     error(e.message);
     process.exit(1);
   }
@@ -84,4 +93,4 @@ function parseConfig(path) {
 module.exports = {
   config,
   parseConfig
-}
+};

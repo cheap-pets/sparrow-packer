@@ -5,9 +5,10 @@
     "format": "iife", // 生成立即执行脚本
     "version": "auto", // 自动增长文件版本号
     "autoInsert": true, // 自动插入页面
+    //"relativePath": "", // 页面中引用 bundle 文件的相对地址
+    "pagePath": "", // 页面输出路径
     "scriptPath": "js", // js 文件输出路径
-    "cssPath": "css", // css 文件输出路径
-    "relativePath": "/static" // 页面中引用 bundle 文件的相对地址
+    "cssPath": "css" // css 文件输出路径
   },
   "vue": {
     "clientRender": true // 依赖客户端渲染的 vue 模块
@@ -18,9 +19,10 @@
       "source": {
         "dir": "module-a", // 模块目录
         "page": "a.html", // 页面文件
-        "main": "script/index.js", // 入口文件（脚本）
+        "script": "script/index.js", // 入口文件（脚本）
         "css": "css/index.pcss", // 样式文件
-        "asserts": "assets"
+        "assets": "assets",
+        "lib": "lib"
       },
       "watch": [
         "lib" // 监视 lib 目录变化

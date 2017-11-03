@@ -1,26 +1,26 @@
 {
-  "sourceRoot": "src", // 源文件根目录
-  "outputRoot": "dist", // 输出根目录
+  "sourceRoot": "src", // source root path
+  "outputRoot": "dist", // output root path
   "bundle": {
-    "format": "iife", // 生成立即执行脚本
-    "version": "auto", // 自动增长文件版本号
-    "autoInsert": true, // 自动插入页面
-    //"relativePath": "", // 页面中引用 bundle 文件的相对地址
-    "pagePath": "", // 页面输出路径
-    "scriptPath": "js", // js 文件输出路径
-    "cssPath": "css", // css 文件输出路径
+    "format": "iife", // Immediately-Invoked Function Expression
+    "version": "auto", // auto increase file version
+    "autoInsert": true, // auto insert js & css path to page content
+    //"relativePath": "", // relative reference path to bundle dir 文件的相对地址
+    "pagePath": "", // output path for page files
+    "scriptPath": "js", // output path for script files
+    "cssPath": "css", // output path for css files
     "external": [
-      "vue"
+      "vue" // set vue as external dependence
     ],
-    "uglify": true,
-    "sourcemap": true,
+    "uglify": true, // uglify script bundle
+    "sourcemap": true, // output sourcemap files
     "globals": {
-      "vue": "Vue"
+      "vue": "Vue" // set vue global name
     }
   },
   /*
   "vue": {
-    "clientRender": false // 依赖客户端渲染的 vue 模块
+    "clientRender": false // bundle with vue-client-render module importing
   },
   */
   "modules": [
@@ -34,28 +34,28 @@
       }
     },
     {
-      "name": "a", // 模块名称
+      "name": "a", // module name
       "source": {
-        "dir": "module-a", // 模块目录
-        "page": "a.html", // 页面文件
-        "script": "script/index.js", // 入口文件（脚本）
-        "assets": "assets"
+        "dir": "module-a", // module source dir
+        "page": "a.html", // page file name
+        "script": "script/index.js", // script entry
+        "assets": "assets" // other static files
       },
       "watch": [
-        "lib" // 监视 lib 目录变化
+        "lib" // notify path "src/lib"
       ]
     },
     {
-      "name": "b", // 模块名称
+      "name": "b", // module name
       "source": {
-        "dir": "module-b", // 模块目录
-        "page": "b.html", // 页面文件
-        "script": "script/index.js", // 入口文件（脚本）
-        "css": "css/index.css", // 样式文件
-        "assets": "assets"
+        "dir": "module-b", // module source dir
+        "page": "b.html", // page file name
+        "script": "script/index.js", // script entry
+        "css": "css/index.css", // css source entry
+        "assets": "assets" // other static files
       },
       "watch": [
-        "lib" // 监视 lib 目录变化
+        "lib" // notify path "src/lib"
       ]
     }
   ]

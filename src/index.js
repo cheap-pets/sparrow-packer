@@ -9,8 +9,8 @@ async function pack(path, clear) {
   await packAll();
 }
 
-async function packAndWatch(path) {
-  await pack(path);
+async function packAndWatch(path, clear) {
+  await pack(path, clear);
   watch();
 }
 

@@ -25,10 +25,9 @@ function parseModuleConfig(module) {
   const { sourceRoot, bundle } = config;
   const sourceDir = join(sourceRoot, source.dir || '');
   const data = {
-    $name: name,
-    $watch: watch
+    $name: name
   };
-
+  if (watch) data.$watch = watch;
   for (let s in source) {
     const src = (s === 'dir') ? null : join(sourceDir, source[s]);
     if (!src || !existsSync(src)) continue;
@@ -38,7 +37,7 @@ function parseModuleConfig(module) {
         out = join(bundle.scriptPath || '', output.script || name + '.js');
         break;
       case 'css':
-        out = join(bundle.cssPath || '', output.css || name + '.js');
+        out = join(bundle.cssPath || '', output.css || name + '.css');
         break;
       case 'page':
         out = join(bundle.pagePath || '', output.page || parse(source.page).base);

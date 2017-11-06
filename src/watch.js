@@ -37,7 +37,7 @@ function checkInsideModule(path, module) {
         dir = item.source ? parse(item.source).dir : null;
         break;
       case '$watch':
-        for (let i = 0; i < item.length; i ++) {
+        for (let i = 0; i < item.length; i++) {
           dir = join(config.sourceRoot, item[i]);
           if (isInside(path, dir)) {
             addModuleTask(module);
@@ -58,18 +58,18 @@ function checkInsideModule(path, module) {
 
 function watch() {
   watcher = chokidar
-  .watch(config.sourceRoot, {
-    ignoreInitial: true,
-    ignored: /(^|[/\\])\../
-  })
-  .on('all', (event, path) => {
-    if (event === 'change' || event === 'add' || event === 'unlink') {
-      info('[file-change]', event, ':', path);
-      config.modules.forEach(module => {
-        checkInsideModule(path, module)
-      });
-    }
-  });
+    .watch(config.sourceRoot, {
+      ignoreInitial: true,
+      ignored: /(^|[/\\])\../
+    })
+    .on('all', (event, path) => {
+      if (event === 'change' || event === 'add' || event === 'unlink') {
+        info('[file-change]', event, ':', path);
+        config.modules.forEach(module => {
+          checkInsideModule(path, module)
+        });
+      }
+    });
 }
 
 function watchOff() {
@@ -80,4 +80,3 @@ module.exports = {
   watch,
   watchOff
 };
-

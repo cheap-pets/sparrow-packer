@@ -61,7 +61,7 @@ function insertVersion(filePath) {
 
 async function processScript(module, source, output) {
   info('[rollup]', 'source :', source);
-  const { format, external, globals, sourcemap, } = config.bundle;
+  const { format, external, globals, sourcemap } = config.bundle;
   this.scriptReference = output = insertVersion(output);
   output = join(config.outputRoot, output);
   let plugins = [

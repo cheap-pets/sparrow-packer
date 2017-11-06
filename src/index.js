@@ -17,4 +17,4 @@ async function packAndWatch(path, clear) {
 module.exports = {
   pack,
   packAndWatch
-}
+};

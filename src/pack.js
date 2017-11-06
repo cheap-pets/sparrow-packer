@@ -17,7 +17,8 @@ const postcss = require('postcss');
 const precss = require('precss');
 const unPrefix = require('postcss-unprefix');
 const autoprefixer = require('autoprefixer');
-const cssProcessor = postcss([precss, unPrefix, autoprefixer]);
+const triangle = require('postcss-triangle');
+const cssProcessor = postcss([precss, triangle, unPrefix, autoprefixer]);
 
 const CleanCss = require('clean-css');
 const cssCleaner = new CleanCss({

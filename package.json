@@ -1,6 +1,6 @@
 {
   "name": "sparrow-packer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "a compositive pack tool, support multi pages web project",
   "main": "src/index.js",
   "scripts": {
@@ -34,6 +34,7 @@
     "jsdom": "^11.3.0",
     "path-is-inside": "^1.0.2",
     "postcss": "^6.0.14",
+    "postcss-triangle": "^2.0.0",
     "postcss-unprefix": "^2.1.1",
     "precss": "^2.0.0",
     "rollup": "^0.50.0",
@@ -45,7 +46,6 @@
     "rollup-plugin-vue": "2.5.2",
     "strip-json-comments": "^2.0.1",
     "vue": "2.5.2",
-    "vue-template-compiler": "2.5.2",
-    "vuex": "^3.0.0"
+    "vue-template-compiler": "2.5.2"
   }
 }

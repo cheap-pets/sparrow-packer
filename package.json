@@ -1,6 +1,6 @@
 {
   "name": "sparrow-packer",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "a compositive pack tool, support multi pages web project",
   "main": "src/index.js",
   "scripts": {
@@ -20,11 +20,7 @@
   "dependencies": {
     "autoprefixer": "^7.1.6",
     "babel-core": "^6.26.0",
-    "babel-helper-vue-jsx-merge-props": "^2.0.2",
     "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-syntax-jsx": "^6.18.0",
-    "babel-plugin-transform-vue-jsx": "^3.5.0",
-    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "chalk": "^2.3.0",
     "chokidar": "^1.7.0",
@@ -32,6 +28,7 @@
     "fs-extra": "^4.0.2",
     "henhouse": "^1.0.1",
     "jsdom": "^11.3.0",
+    "parse5": "^2.2.3",
     "path-is-inside": "^1.0.2",
     "postcss": "^6.0.14",
     "postcss-triangle": "^2.0.0",

@@ -4,11 +4,11 @@
       "env",
       {
         "targets": {
-          "browsers": ["last 2 versions", "chrome >= 36", "ie >= 10"]
+          "browsers": ["last 2 versions", "chrome >= 36", "ie >= 9"]
         },
         "modules": false
       }
     ]
   ],
-  "plugins": ["external-helpers", "transform-vue-jsx"]
+  "plugins": ["external-helpers"]
 }

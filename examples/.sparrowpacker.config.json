@@ -12,8 +12,8 @@
     "external": [
       "vue" // set vue as external dependence
     ],
-    "uglify": true, // uglify script bundle
-    "sourcemap": true, // output sourcemap files
+    "uglify": false, // uglify script bundle
+    "sourcemap": false, // output sourcemap files
     "globals": {
       "vue": "Vue" // set vue global name
     }

@@ -106,7 +106,7 @@ async function processCss(module, source, output) {
 
 function calcRelativePath(source, target) {
   let path;
-  if (config.bundle.relativePath) {
+  if (config.bundle.relativePath || config.bundle.relativePath === '') {
     path = config.bundle.relativePath + target;
   } else {
     const dir = parse(join(config.outputRoot, source)).dir;
@@ -175,8 +175,8 @@ async function packOne(module) {
     const { script, css, page } = module;
     const context = { styles: '' };
     script && (await processScript.call(context, module, script.source, script.output));
-    (css || context.styles)
-      && (await processCss.call(context, module, css ? css.source : null, css ? css.output : null));
+    (css || context.styles) &&
+      (await processCss.call(context, module, css ? css.source : null, css ? css.output : null));
     page && (await processPage.call(context, module, page.source, page.output));
     for (let s in module) {
       if (['$name', '$watch', 'script', 'css', 'page'].indexOf(s) >= 0) continue;

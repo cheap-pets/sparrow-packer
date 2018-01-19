@@ -27,57 +27,57 @@ npm i sparrow-packer -g
 run  command in the source directory or the project directory that include "src" directory，this tool will try to find the source directory
 
 ```shell
-localhost:src scrollbar$ sprpack
-localhost:project-dir scrollbar$ sprpack
+localhost:src user-name$ sprpack
+localhost:project-dir user-name$ sprpack
 ```
 
 specify the source directory or the project directory
 
 ```shell
-localhost:any-path scrollbar$ sprpack /Users/user-name/code/project-dir/src
-localhost:any-path scrollbar$ sprpack /Users/user-name/code/project-dir
+localhost:any-path user-name$ sprpack /Users/user-name/code/project-dir/src
+localhost:any-path user-name$ sprpack /Users/user-name/code/project-dir
 ```
 
 specify both the source directory and the target directory
 
 ```shell
-localhost:any-path scrollbar$ sprpack /Users/user-name/code/project-dir/src /Users/user-name/code/project-dir/dist
+localhost:any-path user-name$ sprpack /Users/user-name/code/project-dir/src /Users/user-name/code/project-dir/dist
 ```
 
 specify relative directory
 
 ```shell
-localhost:project-dir scrollbar$ sprpack src dist
+localhost:project-dir user-name$ sprpack src dist
 ```
 
 specify a page
 
 ```shell
-localhost:project-dir scrollbar$ sprpack src/index.html dist/index.html
+localhost:project-dir user-name$ sprpack src/index.html dist/index.html
 ```
 
 specify a script entry
 
 ```shell
-localhost:project-dir scrollbar$ sprpack src/index.js dist/app.js
+localhost:project-dir user-name$ sprpack src/index.js dist/app.js
 ```
 
 specify a (post)css entry
 
 ```shell
-localhost:project-dir scrollbar$ sprpack src/css/index.pcss dist/css/app.css
+localhost:project-dir user-name$ sprpack src/css/index.pcss dist/css/app.css
 ```
 
 clean target directory
 
 ```shell
-localhost:project-dir scrollbar$ sprpack src dist -c(lean)
+localhost:project-dir user-name$ sprpack src dist -c(lean)
 ```
 
 pack and watch file changes
 
 ```shell
-localhost:project-dir scrollbar$ sprpack src dist -w(atch)
+localhost:project-dir user-name$ sprpack src dist -w(atch)
 ```
 
 

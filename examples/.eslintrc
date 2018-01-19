@@ -1,25 +1,18 @@
 {
   "root": true,
   "extends": [
-    "standard",
-    "plugin:node/recommended",
-    "plugin:security/recommended"
+    "standard"
   ],
   "plugins": [
     "html",
-    "vue",
-    "node",
-    "security"
+    "vue"
   ],
   "globals": {},
   "env": {
     "browser": true,
-    "commonjs": true,
-    "es6": true,
-    "node": true
+    "es6": true
   },
   "rules": {
-    "security/detect-object-injection": 0,
     "max-len": [
       1,
       {

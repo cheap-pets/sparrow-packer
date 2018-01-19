@@ -1,15 +1,18 @@
 <template>
-  <div>hello world ! </div>
+  <div>
+    <div>hello world !</div>
+  </div>
 </template>
 <script>
 export default {
   data() {
-    return {};
+    let a = 's'
+    return {}
   }
-};
+}
 </script>
 <style>
-  .my-cls {
-    padding: 10px;
-  }
+.my-cls {
+  padding: 10px;
+}
 </style>

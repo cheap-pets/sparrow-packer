@@ -1,4 +1,4 @@
-const { join, parse } = require('path')
+const { join, parse, relative } = require('path')
 const { readFileSync, statSync } = require('fs-extra')
 const glob = require('glob')
 const jsdom = require('jsdom')
@@ -126,7 +126,7 @@ function addScript (pageFile, element, page, config) {
     addWatch(dir, input, config)
     const watchAttr = element.getAttribute('watch')
     watchAttr && addWatchs(watchAttr, pageFile, input, config)
-    element.setAttribute('src', output)
+    element.setAttribute('src', relative(join(pageFile, '..'), output))
     element.removeAttribute('main')
     element.removeAttribute('css')
   } else if (srcAttr) {

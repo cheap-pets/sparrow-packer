@@ -31,7 +31,7 @@ function addWatch (watchPath, notifyKey, config) {
 function addWatchs (watchAtrr, pageFile, notifyKey, config) {
   const arr = watchAtrr.trim().split(',')
   for (let i = 0, len = arr.length; i < len; i++) {
-    let watchPath = arr[i].trim
+    let watchPath = arr[i].trim()
     watchPath = join(pageFile, '..', watchPath)
     addWatch(watchPath, notifyKey, config)
   }

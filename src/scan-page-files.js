@@ -96,6 +96,7 @@ function addCss (pageFile, element, page, config) {
 
 function addScript (pageFile, element, page, config) {
   const srcAttr = element.getAttribute('src')
+  if (srcAttr.indexOf('://') > 0) return
   const mainAttr = element.getAttribute('main')
   const cssAttr = element.getAttribute('css')
   let type

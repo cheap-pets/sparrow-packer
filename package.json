@@ -37,7 +37,6 @@
     "jsdom": "^11.3.0",
     "path-is-inside": "^1.0.2",
     "postcss": "^6.0.14",
-    "postcss-triangle": "^2.0.0",
     "postcss-unprefix": "^2.1.1",
     "precss": "^2.0.0",
     "rollup": "^0.50.0",

@@ -37,8 +37,21 @@ function addWatchs (watchAtrr, pageFile, notifyKey, config) {
   }
 }
 
+function addStaticFiles (path, config) {
+  addToConfig(
+    path,
+    {
+      type: 'static',
+      output: path
+    },
+    config
+  )
+}
+
 function addCss (pageFile, element, page, config) {
   const hrefAttr = element.getAttribute('href')
+  if (hrefAttr && hrefAttr.indexOf('://') > 0) return
+
   const mainAttr = element.getAttribute('main')
 
   let input
@@ -97,20 +110,21 @@ function addCss (pageFile, element, page, config) {
 function addScript (pageFile, element, page, config) {
   const srcAttr = element.getAttribute('src')
   if (srcAttr && srcAttr.indexOf('://') > 0) return
-  const mainAttr = element.getAttribute('main')
-  const cssAttr = element.getAttribute('css')
+
+  const jsEntry = element.getAttribute('main')
   let type
   let input
   let output
   let cssOutput
-  if (mainAttr) {
+  if (jsEntry) {
     type = 'script'
-    input = join(pageFile, '..', mainAttr)
+    input = join(pageFile, '..', jsEntry)
     output = join(
       pageFile,
       '..',
       srcAttr ? getVersionedFilename(srcAttr) : join('js', page.name + '.' + tag + '.js')
     )
+    const cssAttr = element.getAttribute('css')
     if (cssAttr) {
       const href = getVersionedFilename(cssAttr, 'inline.')
       cssOutput = join(pageFile, '..', href)
@@ -149,6 +163,22 @@ function addScript (pageFile, element, page, config) {
   )
 }
 
+function addPackableScriptFile () {
+  
+}
+
+function addStaticScriptFile () {
+  
+}
+
+function addPackableCssFile () {
+  
+}
+
+function addStaticCssFile () {
+  
+}
+
 function addPage (root, pageFile, config) {
   const content = readFileSync(join(root, pageFile)).toString()
   const dom = new jsdom.JSDOM(content)
@@ -161,20 +191,30 @@ function addPage (root, pageFile, config) {
   }
   const cssNodes = document.querySelectorAll('link[rel=stylesheet]')
   for (let i = 0, len = cssNodes.length; i < len; i++) {
-    addCss(pageFile, cssNodes[i], page, config)
+    const node = cssNodes[i]
+    const href = node.getAttribute('href')
+    if (href && href.indexOf('://') > 0) continue
+    const entry = node.getAttribute('main')
+    entry ? addPackableCssFile() : addStaticCssFile()
+    // addCss(pageFile, cssNodes[i], page, config)
   }
   const scriptNodes = document.querySelectorAll('script')
   for (let i = 0, len = scriptNodes.length; i < len; i++) {
-    addScript(pageFile, scriptNodes[i], page, config)
+    const node = scriptNodes[i]
+    const src = node.getAttribute('src')
+    if (src && src.indexOf('://') > 0) continue
+    const entry = node.getAttribute('main')
+    entry ? addPackableCssFile() : addStaticCssFile()
+    // addScript(pageFile, scriptNodes[i], page, config)
   }
   config[pageFile] = page
 }
 
 function scanPageFiles (path, ext) {
   const config = {}
-  const pattern = '**/*' + '.' + (ext || 'html')
   const stat = statSync(path)
   if (stat.isDirectory()) {
+    const pattern = '**/*' + '.' + (ext || 'html')
     const files = glob.sync(pattern, { cwd: path })
     for (let i = 0, len = files.length; i < len; i++) {
       addPage(path, files[i], config)

@@ -7,7 +7,13 @@
   export default {
     data () {
       let a = 's'
-      return {}
+      return { a }
     }
   }
 </script>
+<style>
+  .b {
+    color: green;
+  }
+</style>
+

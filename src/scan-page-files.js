@@ -56,7 +56,7 @@ function addCss (pageFile, element, page, config) {
     addWatch(dir, input, config)
     const watchAttr = element.getAttribute('watch')
     watchAttr && addWatchs(watchAttr, pageFile, input, config)
-    element.setAttribute('href', output)
+    element.setAttribute('href', relative(join(pageFile, '..'), output))
 
     let dirAttr = element.getAttribute('include-dir')
     if (dirAttr && dirAttr !== '') {

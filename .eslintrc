@@ -20,6 +20,7 @@
   },
   "rules": {
     "security/detect-object-injection": 0,
+    "security/detect-non-literal-fs-filename": 0,
     "max-len": [
       1,
       {

@@ -3,13 +3,12 @@
 <head>
   <link rel="stylesheet" type="text/css" href="css/a.css">
   <link rel="stylesheet" type="text/css" main="module-a/assets/a.css">
-  <copy-files src="css"></copy-files>
-  <copy-files src="lib"></copy-files>
+  <link rel="static" src="lib" output="libs"></copy-files>
 </head>
 <body>
   <div id="foo">
     <cmp-bar></cmp-bar>
   </div>
   <script type="text/javascript" src="lib/vue/vue.min.js"></script>
-  <script type="text/javascript" main="module-a/script/index.js" css="a.css"></script>
+  <script type="text/javascript" main="module-a/script/index.js" css-output watch="module-a/script"></script>
 </body>

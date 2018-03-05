@@ -1,23 +1,69 @@
-const { emptyDirSync } = require('fs-extra')
-const { parseConfig } = require('./config')
-const { packAll } = require('./pack')
-const { watch } = require('./watch')
-const zc = require('./zero-config-pack')
+const { emptyDirSync, existsSync, statSync, mkdirsSync } = require('fs-extra')
+const { isAbsolute } = require('path')
 
-async function pack (path, clear) {
-  const { outputRoot } = parseConfig(path)
-  clear && emptyDirSync(outputRoot)
-  await packAll()
+const addToAssets = require('./add-to-assets')
+const processAsset = require('./process-asset')
+const watchSource = require('./watch-source')
+const { info } = require('./logger')
+
+function checkExist (path, name, mkdir) {
+  if (!isAbsolute(path)) {
+    throw new Error(name + ': ' + path + '" should be absolute path.')
+  }
+  const exist = existsSync(path)
+  if (!exist && !mkdir) {
+    throw new Error(name + ': ' + path + '" does not exist.')
+  } else {
+    if (!exist && mkdir) {
+      mkdirsSync(path)
+    } else {
+      if (!statSync(path).isDirectory()) {
+        throw new Error(name + ': ' + path + '" is not a folder.')
+      }
+    }
+  }
 }
 
-async function packAndWatch (path, clear) {
-  await pack(path, clear)
-  watch()
+function cleanDir (path) {
+  info('[c]', 'clean:', path)
+  emptyDirSync(path)
 }
 
-module.exports = {
-  pack,
-  packAndWatch,
-  zcPack: zc.pack,
-  zcPackAndWatch: zc.packAndWatch
+class Packer {
+  constructor (options) {
+    const defaultOptions = {
+      pageExt: ['html', 'htm'],
+      scriptExt: ['js'],
+      styleExt: ['css', 'pcss']
+    }
+    this.options = Object.assign(defaultOptions, options)
+    checkExist(this.options.srcRoot, 'options.srcRoot')
+    checkExist(this.options.distRoot, 'options.distRoot')
+    this.revision = options.revision || (+new Date()).toString(36)
+    this.assets = {}
+    this.watchTasks = []
+  }
+  add (input, output) {
+    return addToAssets.call(this, input, output)
+  }
+  addStatic (input, output) {
+    return addToAssets.call(this, input, output, true)
+  }
+  addAll () {
+    return addToAssets.call(this)
+  }
+  async run () {
+    info('[=]', 'start packing ...')
+    const { clean, watch, distRoot } = this.options
+    clean !== false && cleanDir(distRoot)
+    for (const key in this.assets) {
+      await processAsset.call(this, key)
+    }
+    watch && (this.watcher = watchSource.call(this))
+  }
+  watchOff () {
+    this.watcher && this.watcher.close()
+  }
 }
+
+module.exports = Packer

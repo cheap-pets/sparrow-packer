@@ -9,7 +9,7 @@ function warn () {
 }
 
 function error () {
-  console.error.apply(this, Array.prototype.concat.apply([red('[error]')], arguments))
+  console.error.apply(this, Array.prototype.concat.apply([red('[err!]')], arguments))
 }
 
 module.exports = {

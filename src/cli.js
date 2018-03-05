@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
-const { isAbsolute, join, resolve, parse } = require('path')
+const { isAbsolute, resolve, parse } = require('path')
 const { statSync, existsSync } = require('fs-extra')
-const { info, error } = require('./log')
-
-const { pack } = require('./zero-config-pack')
+const { info } = require('./log')
+const pack = require('./index')
 
 const argv = require('yargs')
   .alias('c', 'clean')
@@ -22,8 +21,7 @@ if (!isAbsolute(src)) {
 }
 
 if (!existsSync(src)) {
-  error('cannot find source path : ', src)
-  process.exit(1)
+  throw new Error('cannot find source path : ' + src)
 }
 
 const srcStat = statSync(src)
@@ -42,9 +40,8 @@ if (!dist) {
   dist = resolve(cwd, dist)
 }
 
-if (!existsSync(src)) {
-  error('cannot find target path : ', src)
-  process.exit(1)
+if (!existsSync(dist)) {
+  throw new Error('cannot find target path : ' + dist)
 }
 
 info('ready to pack ...')

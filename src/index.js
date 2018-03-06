@@ -38,7 +38,7 @@ class Packer {
     }
     this.options = Object.assign(defaultOptions, options)
     checkExist(this.options.srcRoot, 'options.srcRoot')
-    checkExist(this.options.distRoot, 'options.distRoot')
+    checkExist(this.options.distRoot, 'options.distRoot', true)
     this.revision = options.revision || (+new Date()).toString(36)
     this.assets = {}
     this.watchTasks = []

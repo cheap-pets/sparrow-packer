@@ -2,7 +2,7 @@ const rollup = require('rollup')
 
 // const buildinsPlugin = require('rollup-plugin-node-builtins')()
 // const replacePlugin = require('rollup-plugin-replace')
-const resolvePlugin = require('rollup-plugin-node-resolve')()
+const resolvePlugin = require('rollup-plugin-node-resolve')({ jsnext: true, main: true })
 const commonjsPlugin = require('rollup-plugin-commonjs')()
 const uglifyPlugin = require('rollup-plugin-uglify')()
 const babelPlugin = require('rollup-plugin-babel')()
@@ -56,6 +56,7 @@ async function bundleScript (input, output, cssOutput, options) {
       resolvePlugin,
       commonjsPlugin,
       jsonPlugin
+      // babelPlugin
       // buildinsPlugin
     )
   }

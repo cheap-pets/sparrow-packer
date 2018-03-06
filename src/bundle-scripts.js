@@ -33,7 +33,7 @@ const { info } = require('./logger')
 const bundleStyles = require('./bundle-styles')
 
 async function bundleScript (input, output, cssOutput, options) {
-  const { browser, node, name, sourcemap, globals, uglify, format } = options || {}
+  const { browser, node, name, sourcemap, globals, uglify, format, treeshake } = options || {}
   info('[>]', 'script:', input)
   let styles = ''
   const plugins = []
@@ -61,10 +61,12 @@ async function bundleScript (input, output, cssOutput, options) {
     )
   }
   if (uglify) plugins.push(uglifyPlugin)
-  let bundle = await rollup.rollup({
+  const rollupOptions = {
     input,
     plugins
-  })
+  }
+  if (treeshake === false) rollupOptions.treeshake = false
+  let bundle = await rollup.rollup(rollupOptions)
   await bundle.write({
     name: name || parse(output).name,
     format: format || node ? 'cjs' : 'iife',

@@ -3,7 +3,7 @@ const rollup = require('rollup')
 // const buildinsPlugin = require('rollup-plugin-node-builtins')()
 // const replacePlugin = require('rollup-plugin-replace')
 const resolvePlugin = require('rollup-plugin-node-resolve')({ jsnext: true, main: true })
-const commonjsPlugin = require('rollup-plugin-commonjs')()
+const commonjsPlugin = require('rollup-plugin-commonjs')
 const uglifyPlugin = require('rollup-plugin-uglify')()
 const babelPlugin = require('rollup-plugin-babel')()
 const vuePlugin = require('rollup-plugin-vue')
@@ -33,7 +33,7 @@ const { info } = require('./logger')
 const bundleStyles = require('./bundle-styles')
 
 async function bundleScript (input, output, cssOutput, options) {
-  const { browser, node, name, sourcemap, globals, uglify, format, treeshake } = options || {}
+  const { browser, node, name, sourcemap, globals, uglify, format, treeshake, ignore } = options || {}
   info('[>]', 'script:', input)
   let styles = ''
   const plugins = []
@@ -54,7 +54,7 @@ async function bundleScript (input, output, cssOutput, options) {
     plugins.push(
       rePluginNode,
       resolvePlugin,
-      commonjsPlugin,
+      ignore ? commonjsPlugin({ ignore }) : commonjsPlugin(),
       jsonPlugin
       // babelPlugin
       // buildinsPlugin

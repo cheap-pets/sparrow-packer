@@ -11,11 +11,10 @@ function resolvePath (root, path) {
 }
 
 function add (assets, key, value, associationKey) {
-  let changed = false
   let asset = assets[key]
   if (!asset) {
     asset = assets[key] = value
-    changed = true
+    asset.changed = true
     logger.info('[+]', value.type + ':', key)
   } else {
     let isUniqueAssociation =
@@ -23,17 +22,17 @@ function add (assets, key, value, associationKey) {
       asset.associations.length === 1 &&
       asset.associations[0] === associationKey
 
-    if (asset.output !== value.output && isUniqueAssociation) {
+    if (value.output && asset.output !== value.output && isUniqueAssociation) {
       asset.output = value.output
-      changed = true
+      asset.changed = true
     }
     if (asset.cssOutput !== value.cssOutput && isUniqueAssociation) {
       asset.cssOutput = value.cssOutput
-      changed = true
+      asset.changed = true
     }
     if (value.content) {
       asset.content = value.content
-      changed = true
+      asset.changed = true
     }
   }
   if (associationKey) {
@@ -44,7 +43,6 @@ function add (assets, key, value, associationKey) {
       logger.info('...', 'association:', key, '<->', associationKey)
     }
   }
-  asset.changed = changed
   return asset
 }
 
@@ -54,6 +52,7 @@ function addStaticPath (input, output, pageAssetKey) {
     if (assets[key].type !== 'static') continue
     if (inside(input, key)) {
       input = key
+      output = null
     } else if (inside(key, input)) {
       delete assets[key]
     }

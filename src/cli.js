@@ -2,7 +2,7 @@
 
 const { isAbsolute, resolve, parse } = require('path')
 const { statSync, existsSync } = require('fs-extra')
-const { info } = require('./log')
+const { info } = require('./logger')
 const pack = require('./index')
 
 const argv = require('yargs')

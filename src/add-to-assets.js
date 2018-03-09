@@ -1,7 +1,7 @@
 const { isAbsolute, parse, join, relative, resolve } = require('path')
 const { readFileSync, statSync } = require('fs-extra')
 const { JSDOM } = require('jsdom')
-
+const pretty = require('pretty')
 const inside = require('path-is-inside')
 const glob = require('glob')
 const logger = require('./logger')
@@ -188,7 +188,7 @@ function addPageFile (input, output) {
   add(this.assets, input, {
     type: 'page',
     output,
-    content: dom.serialize()
+    content: pretty(dom.serialize())
   })
 }
 

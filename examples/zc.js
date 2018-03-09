@@ -7,9 +7,7 @@ const distRoot = join(__dirname, 'dist')
 const packer = new Packer({
   srcRoot,
   distRoot,
-  watch: true,
-  browser: false,
-  node: true
+  watch: true
 })
 
-packer.add('a.js').run()
+packer.addAll().run()

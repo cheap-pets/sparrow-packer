@@ -33,7 +33,7 @@ const { info } = require('./logger')
 const bundleStyles = require('./bundle-styles')
 
 async function bundleScript (input, output, cssOutput, options) {
-  const { browser, node, name, sourcemap, globals, uglify, format, treeshake, ignore } = options || {}
+  const { browser, node, name, sourcemap, globals, uglify, format, treeshake, ignore, intro, outro } = options || {}
   info('[>]', 'script:', input)
   let styles = ''
   const plugins = []
@@ -72,7 +72,9 @@ async function bundleScript (input, output, cssOutput, options) {
     format: format || node ? 'cjs' : 'iife',
     file: output,
     sourcemap,
-    globals
+    globals,
+    intro,
+    outro
   })
   info('...', 'output:', output)
   if (cssOutput) {

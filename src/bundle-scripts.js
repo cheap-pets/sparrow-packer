@@ -47,6 +47,7 @@ async function bundleScript (input, output, cssOutput, options) {
     )
     plugins.push(
       resolvePlugin,
+      commonjsPlugin(),
       babelPlugin,
       rePluginBrowser
     )

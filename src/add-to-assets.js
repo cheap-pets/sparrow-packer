@@ -135,8 +135,10 @@ function processPageElement (document, element, pageInput, outputRoot, assetType
       ? addStyleFile.call(this, input, output, pageInput)
       : addScriptFile.call(this, input, output, cssOutput, pageInput)
 
-    const watch = element.getAttribute('watch') || parse(input).dir
+    const watch = parse(input).dir
     addWatchPath.call(this, watch, dir, input)
+    const watch2 = element.getAttribute('watch')
+    if (watch2) addWatchPath.call(this, watch2, dir, input)
 
     element.removeAttribute('main')
     element.removeAttribute('watch')

@@ -3,7 +3,7 @@
   "bin": {
     "sprpack": "src/cli.js"
   },
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "a compositive pack tool, support multi pages web project",
   "main": "src/index.js",
   "files": [

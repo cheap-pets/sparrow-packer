@@ -43,14 +43,12 @@ async function bundleScript (input, output, cssOutput, options) {
         css: s => {
           styles += s
         }
-      })
-    )
-    plugins.push(
+      }),
       resolvePlugin,
       commonjsPlugin(),
-      babelPlugin,
+      jsonPlugin,
       rePluginBrowser,
-      jsonPlugin
+      babelPlugin
     )
   } else {
     plugins.push(

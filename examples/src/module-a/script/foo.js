@@ -1,8 +1,9 @@
-/* eslint-disable no-unused-vars */
+import { VTable } from 'vue-easytable'
 import Bar from './components/bar.vue'
 
-/* eslint-enable no-unused-vars */
-;(function () {
+Vue.component(VTable.name, VTable)
+
+function init () {
   let arr = [1, 2, 3]
   if (arr.indexOf(1)) {
     console.log('ok')
@@ -13,4 +14,6 @@ import Bar from './components/bar.vue'
       'cmp-bar': Bar
     }
   })
-})()
+}
+
+init()

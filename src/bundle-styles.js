@@ -1,15 +1,16 @@
 const { mkdirsSync, readFileSync, writeFileSync } = require('fs-extra')
 const { parse } = require('path')
 const { info, warn } = require('./logger')
-const importResolve = require('./import-resolve')
+// const importResolve = require('./import-resolve')
 
 const postcss = require('postcss')
-const precss = require('precss')({ resolve: importResolve })
+const atImport = require('postcss-import')()
+const precss = require('precss') // ({ resolve: importResolve })
 const unPrefix = require('postcss-unprefix')
 const autoprefixer = require('autoprefixer')
 const mixins = require('postcss-mixins')
 // const triangle = require('postcss-triangle')
-const cssProcessor = postcss([precss, mixins, unPrefix, autoprefixer]) // triangle
+const cssProcessor = postcss([atImport, precss, mixins, unPrefix, autoprefixer]) // triangle
 
 const CleanCss = require('clean-css')
 const cssCleaner = new CleanCss({

@@ -1,6 +1,6 @@
 const { isAbsolute, parse, join, relative, resolve } = require('path')
 const { readFileSync, statSync } = require('fs-extra')
-const { JSDOM } = require('jsdom')
+const cheerio = require('cheerio')
 const pretty = require('pretty')
 const inside = require('path-is-inside')
 const glob = require('glob')
@@ -115,20 +115,20 @@ function getBundlePath (outputRoot, output, filename) {
   return output
 }
 
-function processPageElement (document, element, pageInput, outputRoot, assetType) {
+function processPageElement ($, element, pageInput, outputRoot, assetType) {
   if (this.options.browser !== false) this.options.browser = true
-  const ref = element.getAttribute('href') || element.getAttribute('src')
+  const ref = element.attr('href') || element.attr('src')
   if (ref && ref.indexOf('://') > 0) return
 
   const { dir, name } = parse(pageInput)
-  const main = element.getAttribute('main')
+  const main = element.attr('main')
   if (main && (assetType === 'style' || assetType === 'script')) {
     const input = resolve(dir, main)
     const ext = assetType === 'style' ? '.css' : '.js'
-    const filebase = (element.getAttribute('name') || name) + '.' + this.revision
-    const output = getBundlePath(outputRoot, element.getAttribute('output'), filebase + ext)
-    let cssOutput = element.getAttribute('css-output')
-    if (cssOutput !== null) {
+    const filebase = (element.attr('name') || name) + '.' + this.revision
+    const output = getBundlePath(outputRoot, element.attr('output'), filebase + ext)
+    let cssOutput = element.attr('css-output')
+    if (cssOutput !== null && cssOutput !== undefined) {
       cssOutput = getBundlePath(outputRoot, cssOutput, filebase + '+.css')
     }
     const asset = assetType === 'style'
@@ -137,20 +137,18 @@ function processPageElement (document, element, pageInput, outputRoot, assetType
 
     const watch = parse(input).dir
     addWatchPath.call(this, watch, dir, input)
-    const watch2 = element.getAttribute('watch')
+    const watch2 = element.attr('watch')
     if (watch2) addWatchPath.call(this, watch2, dir, input)
 
-    element.removeAttribute('main')
-    element.removeAttribute('watch')
-    element.removeAttribute('output')
-    element.removeAttribute('css-output')
-    element.setAttribute(assetType === 'style' ? 'href' : 'src', relative(outputRoot, asset.output))
-    if (cssOutput !== null) {
-      const cssElm = document.createElement('link')
-      cssElm.setAttribute('rel', 'stylesheet')
-      cssElm.setAttribute('type', 'text/css')
-      cssElm.setAttribute('href', relative(outputRoot, asset.cssOutput))
-      document.head.appendChild(cssElm)
+    element.removeAttr('main')
+    element.removeAttr('watch')
+    element.removeAttr('output')
+    element.removeAttr('css-output')
+    element.attr(assetType === 'style' ? 'href' : 'src', relative(outputRoot, asset.output))
+    if (cssOutput !== null && cssOutput !== undefined) {
+      $('<link rel="stylesheet" type="text/css"></link>')
+        .attr('href', relative(outputRoot, asset.cssOutput))
+        .appendTo($('head'))
     }
   } else if (ref) {
     let input
@@ -164,32 +162,28 @@ function processPageElement (document, element, pageInput, outputRoot, assetType
     output = resolve(outputRoot, ref) // element.getAttribute('output') || ref
     // }
     addStaticPath.call(this, input, output, pageInput)
-    if (assetType === 'static') element.parentNode.removeChild(element)
+    if (assetType === 'static') element.remove()
   }
 }
 
 function addPageFile (input, output) {
   const outDir = parse(output).dir
   const content = readFileSync(input).toString()
-  const dom = new JSDOM(content)
-  const document = dom.window.document
+  const $ = cheerio.load(content)
 
-  const styleElements = document.querySelectorAll('link[rel=stylesheet]')
-  for (let i = 0, len = styleElements.length; i < len; i++) {
-    processPageElement.call(this, document, styleElements[i], input, outDir, 'style')
-  }
-  const staticElements = document.querySelectorAll('link[rel=static]')
-  for (let i = 0, len = staticElements.length; i < len; i++) {
-    processPageElement.call(this, document, staticElements[i], input, outDir, 'static')
-  }
-  const scriptElements = document.querySelectorAll('script')
-  for (let i = 0, len = scriptElements.length; i < len; i++) {
-    processPageElement.call(this, document, scriptElements[i], input, outDir, 'script')
-  }
+  $('link[rel=stylesheet]').each((index, element) => {
+    processPageElement.call(this, $, $(element), input, outDir, 'style')
+  })
+  $('link[rel=static]').each((index, element) => {
+    processPageElement.call(this, $, $(element), input, outDir, 'static')
+  })
+  $('script').each((index, element) => {
+    processPageElement.call(this, $, $(element), input, outDir, 'script')
+  })
   add(this.assets, input, {
     type: 'page',
     output,
-    content: pretty(dom.serialize())
+    content: pretty($.html())
   })
 }
 

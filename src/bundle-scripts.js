@@ -4,9 +4,9 @@ const rollup = require('rollup')
 // const replacePlugin = require('rollup-plugin-replace')
 const resolvePlugin = require('rollup-plugin-node-resolve')({ jsnext: true, main: true })
 const commonjsPlugin = require('rollup-plugin-commonjs')
-const uglifyPlugin = require('rollup-plugin-uglify')()
+const { uglifyPlugin } = require('rollup-plugin-uglify')
 const babelPlugin = require('rollup-plugin-babel')()
-const vuePlugin = require('rollup-plugin-vue')
+const vuePlugin = require('rollup-plugin-vue').default
 const jsonPlugin = require('rollup-plugin-json')()
 const rePlugin = require('rollup-plugin-re')
 const rePluginNode = rePlugin({
@@ -33,7 +33,19 @@ const { info } = require('./logger')
 const bundleStyles = require('./bundle-styles')
 
 async function bundleScript (input, output, cssOutput, options) {
-  const { browser, node, name, sourcemap, globals, uglify, format, treeshake, ignore, intro, outro } = options || {}
+  const {
+    browser,
+    node,
+    name,
+    sourcemap,
+    globals,
+    uglify,
+    format,
+    treeshake,
+    ignore,
+    intro,
+    outro
+  } = options || {}
   info('[>]', 'script:', input)
   let styles = ''
   const plugins = []
@@ -60,7 +72,7 @@ async function bundleScript (input, output, cssOutput, options) {
       // buildinsPlugin
     )
   }
-  if (uglify) plugins.push(uglifyPlugin)
+  if (uglify) plugins.push(uglifyPlugin())
   const rollupOptions = {
     input,
     plugins

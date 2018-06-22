@@ -47,7 +47,9 @@ async function processAsset (path, staticOutput) {
     Object.defineProperty(e, 'stack', {
       enumerable: true
     })
-    if (e.message) error('...', e.message)
+    if (e.message) error(e.message)
+    if (e.input && e.input.file) error('...', '@', e.input.file)
+    if (e.id) error('...', '@', e.id)
     if (e.stack) error('...', e.stack)
   }
 }

@@ -11,8 +11,8 @@
     }
   }
 </script>
-<style>
+<style lang="postcss">
   .my-cls {
-    padding: 10px;
+    padding: 22px;
   }
 </style>

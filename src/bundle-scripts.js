@@ -7,6 +7,7 @@ const commonjsPlugin = require('rollup-plugin-commonjs')
 const uglifyPlugin = require('rollup-plugin-uglify').uglify
 const babelPlugin = require('rollup-plugin-babel')()
 const vuePlugin = require('rollup-plugin-vue').default
+const cssPlugin = require('rollup-plugin-css-only')
 const jsonPlugin = require('rollup-plugin-json')()
 const rePlugin = require('rollup-plugin-re')
 const rePluginNode = rePlugin({
@@ -52,7 +53,13 @@ async function bundleScript (input, output, cssOutput, options) {
   if (browser) {
     plugins.push(
       vuePlugin({
-        css: s => {
+        css: false
+        // css: s => {
+        //   styles += s
+        // }
+      }),
+      cssPlugin({
+        output: s => {
           styles += s
         }
       }),

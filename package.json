@@ -3,7 +3,7 @@
   "bin": {
     "sprpack": "src/cli.js"
   },
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "a compositive pack tool, support multi pages web project",
   "main": "src/index.js",
   "files": [
@@ -49,6 +49,7 @@
     "rollup-plugin-alias": "^1.4.0",
     "rollup-plugin-babel": "^3.0.4",
     "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-css-only": "^0.4.0",
     "rollup-plugin-json": "^3.0.0",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-re": "^1.0.7",

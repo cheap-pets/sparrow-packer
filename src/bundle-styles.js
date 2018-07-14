@@ -5,12 +5,12 @@ const { info, warn } = require('./logger')
 
 const postcss = require('postcss')
 const atImport = require('postcss-import')()
-const precss = require('precss') // ({ resolve: importResolve })
+const precss = require('precss')({ disable: '@mixin, @include, @content' }) // ({ resolve: importResolve })
 const unPrefix = require('postcss-unprefix')
 const autoprefixer = require('autoprefixer')
 const mixins = require('postcss-mixins')
 // const triangle = require('postcss-triangle')
-const cssProcessor = postcss([atImport, precss, mixins, unPrefix, autoprefixer]) // triangle
+const cssProcessor = postcss([atImport, mixins, precss, unPrefix, autoprefixer]) // triangle
 
 const CleanCss = require('clean-css')
 const cssCleaner = new CleanCss({

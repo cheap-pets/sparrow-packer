@@ -4,6 +4,7 @@ const { isAbsolute } = require('path')
 const addToAssets = require('./add-to-assets')
 const processAsset = require('./process-asset')
 const watchSource = require('./watch-source')
+const bundle = require('./bundle')
 const { info } = require('./logger')
 
 function checkExist (path, name, mkdir) {
@@ -54,11 +55,12 @@ class Packer {
   }
   async run () {
     info('[=]', 'start packing ...')
-    const { clean, watch, distRoot } = this.options
+    const { clean, watch, distRoot, zipFile } = this.options
     clean !== false && cleanDir(distRoot)
     for (const key in this.assets) {
       await processAsset.call(this, key)
     }
+    if (zipFile) await bundle(distRoot, zipFile)
     watch && (this.watcher = watchSource.call(this))
   }
   watchOff () {

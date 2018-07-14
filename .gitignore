@@ -65,3 +65,6 @@ typings/
 
 # Examples Dist
 examples/dist/*
+
+# package-lock
+package-lock.json

@@ -3,7 +3,7 @@
   "bin": {
     "sprpack": "src/cli.js"
   },
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "a compositive pack tool, support multi pages web project",
   "main": "src/index.js",
   "files": [
@@ -28,7 +28,7 @@
   "devDependencies": {},
   "dependencies": {
     "archiver": "^2.1.1",
-    "autoprefixer": "^8.6.3",
+    "autoprefixer": "^8.6.5",
     "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -56,7 +56,6 @@
     "rollup-plugin-re": "^1.0.7",
     "rollup-plugin-uglify": "^4.0.0",
     "rollup-plugin-vue": "^2.2.21",
-    "stream-buffers": "^3.0.2",
     "strip-json-comments": "^2.0.1",
     "vue": "^2.5.16",
     "vue-template-compiler": "^2.5.16",

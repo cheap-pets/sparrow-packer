@@ -1,15 +1,16 @@
-const { createWriteStream, removeSync } = require('fs-extra')
-const path = require('path')
+const { existsSync, mkdirsSync, removeSync, createWriteStream } = require('fs-extra')
+const { parse } = require('path')
 const archiver = require('archiver')
 
 const { info, error } = require('./logger')
 
 function bundlePromise (inputDir, outputFile) {
   return new Promise((resolve, reject) => {
-    const filePath = path.resolve(__dirname, outputFile)
-    info('[z]', filePath)
-    removeSync(filePath)
-    const output = createWriteStream(filePath).on('close', resolve)
+    info('[z]', 'dir:', inputDir)
+    const { dir } = parse(outputFile)
+    if (!existsSync(dir)) mkdirsSync(dir)
+    else removeSync(outputFile)
+    const output = createWriteStream(outputFile).on('close', resolve)
     const zip = archiver('zip', { zlib: { level: 5 } })
     zip
       .on('error', reject)
@@ -22,8 +23,8 @@ function bundlePromise (inputDir, outputFile) {
 
 async function bundleApp (inputDir, outputFile) {
   try {
-    await bundlePromise()
-    info('...', 'done')
+    await bundlePromise(inputDir, outputFile)
+    info('...', 'output:', outputFile)
   } catch (err) {
     error('...', err.message || err)
   }

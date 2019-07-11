@@ -1,4 +1,5 @@
 const rollup = require('rollup')
+const { isAbsolute } = require('path')
 
 // const buildinsPlugin = require('rollup-plugin-node-builtins')()
 // const replacePlugin = require('rollup-plugin-replace')
@@ -82,6 +83,7 @@ async function bundleScript (input, output, cssOutput, options) {
   if (uglify) plugins.push(uglifyPlugin())
   const rollupOptions = {
     input,
+    external: (ignore || browser) ? undefined : id => !isAbsolute(id) && ['.', '/'].indexOf(id[0]) < 0,
     plugins
   }
   if (treeshake === false) rollupOptions.treeshake = false
